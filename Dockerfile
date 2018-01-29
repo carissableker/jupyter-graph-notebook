@@ -6,9 +6,10 @@ RUN conda config --add channels conda-forge
 RUN conda install -y \
     py2neo \
     python-igraph \
-    networkx 
+    networkx && conda clean --all
 
-# Python packages from pip and conda 
+
+# Python packages from pip
 RUN pip install \
     py2cytoscape \
     visJS2jupyter 
