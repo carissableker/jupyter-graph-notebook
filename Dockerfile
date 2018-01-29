@@ -5,8 +5,8 @@ USER jovyan
 RUN conda config --add channels conda-forge
 RUN conda install -y \
     py2neo \
-    igraph \
-    networkx \
+    python-igraph \
+    networkx 
 
 # Python packages from pip and conda 
 RUN pip install \
