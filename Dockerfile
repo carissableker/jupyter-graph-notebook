@@ -7,7 +7,8 @@ RUN conda config --add channels conda-forge
 RUN conda install --quiet --yes \
     py2neo \
     python-igraph \
-    networkx && \
+    networkx \
+    plotly && \
     conda clean -tipsy && \
     fix-permissions $CONDA_DIR
 
