@@ -1,15 +1,20 @@
 FROM jupyter/scipy-notebook
-USER jovyan
+
+USER $NB_USER
 
 # Python packages from conda
 RUN conda config --add channels conda-forge
-RUN conda install -y \
+RUN conda install --quiet --yes \
     py2neo \
     python-igraph \
-    networkx && conda clean --all
+    networkx && \
+    conda clean -tipsy && \
+    fix-permissions $CONDA_DIR
 
 
 # Python packages from pip
-RUN pip install \
+RUN pip install --quiet --no-cache-dir\
     py2cytoscape \
-    visJS2jupyter 
+    visJS2jupyter && \
+    fix-permissions $CONDA_DIR
+
