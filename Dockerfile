@@ -19,3 +19,7 @@ RUN pip install --quiet --no-cache-dir\
     visJS2jupyter && \
     fix-permissions $CONDA_DIR
 
+COPY bnv_tools /opt/bnv_tools/
+COPY bnv_tools.pth "$CONDA_DIR"/lib/python3.6/site-packages/
+
+
