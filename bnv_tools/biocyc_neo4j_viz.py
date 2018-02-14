@@ -29,7 +29,7 @@ def __load_vertices(graph, entities_file, periodic=1000, Key_Name='vertex_key_fi
             xid, xtype, name, other = re.match('^N\s.node\s(.*);type:\"(.*)\",name:\"(.*?)\",?(.*)?$', line).groups()
             D = {"id":xid, 'name':name}
 
-            xtype = re.sub(r'-', '_', xtype())
+            xtype = re.sub(r'-', '_', xtype)
 
             if other != '':
                  for attribute, value in [av.split(':', 1) for av in re.split(''',(?=(?:[^'"]|'[^']*'|"[^"]*")*$)''', other)]:
