@@ -8,6 +8,9 @@ import ipywidgets as widgets
 
 import pandas as  pd
 import re
+import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib
 
 
 def __load_vertices(graph, entities_file, periodic=1000, Key_Name='vertex_key_file.tsv'):
@@ -127,20 +130,44 @@ def query_graph(graph, source='', target='', edge=''):
  
     return  pd.DataFrame(cursor.data())
 
-def prepare_plot_igraph(sub_igraph, layout='fruchterman_reingold', scale=100):
 
-    # this take a while for large graphs
-    pos=sub_igraph.layout(layout)
+def prepare_plot_igraph(sub_igraph, 
+                        layout='fruchterman_reingold', 
+                        positions=None, 
+                        scale=10, 
+                        edge_cmap=plt.cm.tab20c, 
+                        vertex_cmap=plt.cm.tab20):
 
+    # calculate layout if needed
+    if positions is None: 
+        positions=sub_igraph.layout(layout)
+
+    # color edges
+    d_edge = {}
+    uniq_edge_att = set(g.es['type'])
+    edge_cmap_values = edge_cmap(np.arange(len(uniq_edge_att))/len(uniq_edge_att), alpha=1)
+    for att, row in zip(uniq_edge_att, edge_cmap_values):
+        d_edge[att] = matplotlib.colors.rgb2hex(row)
+    
+    # color vertices
+    d_vertex = {}
+    uniq_vertex_att = set(g.vs['type'])
+    vertex_cmap_values = vertex_cmap(np.arange(len(uniq_vertex_att))/len(uniq_vertex_att), alpha=1)
+    for att, row in zip(uniq_vertex_att, vertex_cmap_values):
+        d_vertex[att] = matplotlib.colors.rgb2hex(row)
+      
     nodes_dict = [{"id":n.attributes()['name'],
-              "x":pos[n.index][0]*scale,
-              "y":pos[n.index][1]*scale,  
-              "degree":sub_igraph.degree(n)} for n in sub_igraph.vs()
-              ]
+                   "x":positions[n.index][0]*scale,
+                   "y":positions[n.index][1]*scale,  
+                   "degree":sub_igraph.degree(n), 
+                   "color":d_vertex[n.attributes()["type"]]
+                  } for n in sub_igraph.vs()]
    
     edges_dict = [{"source":n.source, 
-               "target":n.target,
-               "type":n.attributes()["type"]} for n in sub_igraph.es()]
+                   "target":n.target,
+                   "type":n.attributes()["type"],
+                   "color":d_edge[n.attributes()["type"]]
+                  } for n in sub_igraph.es()]
 
     return nodes_dict, edges_dict
 
