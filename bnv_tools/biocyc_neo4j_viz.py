@@ -29,7 +29,7 @@ def __load_vertices(graph, entities_file, periodic=1000, Key_Name='vertex_key_fi
 
         for i, line in enumerate(f):
             line = re.sub(r'\<i\>|\<\/i\>', '', line)
-            xid, xtype, name, other = re.match('^N\s.node\s(.*);type:\"(.*)\",name:\"(.*?)\",?(.*)?$', line).groups()
+            xid, xtype, name, other = re.match('^N\s(.*);type:\"(.*)\",name:\"(.*?)\",?(.*)?$', line).groups()
             D = {"id":xid, 'name':name}
 
             xtype = re.sub(r'-', '_', xtype)
