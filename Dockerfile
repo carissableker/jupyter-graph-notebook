@@ -8,7 +8,8 @@ RUN conda install --quiet --yes \
     py2neo \
     python-igraph \
     networkx \
-    plotly && \
+    plotly \
+    ggplot && \
     conda clean -tipsy && \
     fix-permissions $CONDA_DIR
 
