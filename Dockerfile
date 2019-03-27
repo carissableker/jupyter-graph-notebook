@@ -12,6 +12,8 @@ RUN conda install --quiet --yes \
     conda clean -tipsy && \
     fix-permissions $CONDA_DIR
 
+# fix ggplot bug
+RUN pip install --quiet --no-cache-dir git+https://github.com/sushinoya/ggpy 
 
 # Python packages from pip
 RUN pip install --quiet --no-cache-dir\
